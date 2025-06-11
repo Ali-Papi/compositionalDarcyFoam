@@ -1,0 +1,15 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+set -x
+
+phaseSystems/Allwmake $targetType $*
+porousModels/Allwmake $targetType $*
+blockSystems/Allwmake $targetType $*
+
+compositionalDarcyFoam/Allwmake $targetType $*
+quaternaryNsCompositionalDarcyFoam/Allwmake $targetType $*
+quaternaryCompositionalDarcyFoam/Allwmake $targetType $*
+binaryCompositionalDarcyFoam/Allwmake $targetType $*
+coupledMatrixFoam/Allwmake $targetType $*
+
+#------------------------------------------------------------------------------

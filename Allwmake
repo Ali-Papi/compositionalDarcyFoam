@@ -16,7 +16,7 @@ set -x
 # Compiling project applications
 #------------------------------------------------------------------------------
 (
-    applications/solvers/coupledMatrixFoam/Allwmake
+    applications/solvers/compositionalDarcyFoam/Allwmake
 #    applications/utilities/Allwmake
 )
 

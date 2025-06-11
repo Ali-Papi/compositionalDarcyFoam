@@ -1,8 +1,0 @@
-blockSystem/blockSystem.C
-blockSystem/blockSystemNew.C
-block2/block2.C
-block3/block3.C
-block4/block4.C
-block5/block5.C
-
-LIB = $(FOAM_USER_LIBBIN)/libblockSystems

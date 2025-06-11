@@ -1,0 +1,9 @@
+blockSystem/blockSystem.C
+blockSystem/blockSystemNew.C
+block3/block3.C
+block4/block4.C
+block5/block5.C
+block6/block6.C
+block8/block8.C
+
+LIB = $(FOAM_USER_LIBBIN)/libblockSystems
