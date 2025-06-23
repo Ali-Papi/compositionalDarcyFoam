@@ -7,6 +7,8 @@ porousModels/Allwmake $targetType $*
 blockSystems/Allwmake $targetType $*
 
 compositionalDarcyFoam/Allwmake $targetType $*
+compositionalSwDarcyFoam/Allwmake $targetType $*
+compositionalGLSDarcyFoam/Allwmake $targetType $*
 quaternaryNsCompositionalDarcyFoam/Allwmake $targetType $*
 quaternaryCompositionalDarcyFoam/Allwmake $targetType $*
 binaryCompositionalDarcyFoam/Allwmake $targetType $*

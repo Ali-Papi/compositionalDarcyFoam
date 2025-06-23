@@ -196,16 +196,16 @@ if (!alphaG || !rhoG || !YCO2 || !YH2O || !alphaW || !rhoW || !XCO2 || !XH2O)
 }
 
 // Now compute derived fields
-volScalarField NH2O = (*XH2O)*(*rhoW)/Mw + (*YH2O)*(*rhoG)/Mg;
-volScalarField NCO2 = (*XCO2)*(*rhoW)/Mw + (*YCO2)*(*rhoG)/Mg;
-volScalarField NT = (*alphaW)*(*rhoW)/Mw + (*alphaG)*(*rhoG)/Mg;
-volScalarField NL = (*alphaW)*(*rhoW)/Mw;
+volScalarField NH2O = 1e3*(*XH2O)*(*rhoW)/Mw + 1e3*(*YH2O)*(*rhoG)/Mg;
+volScalarField NCO2 = 1e3*(*XCO2)*(*rhoW)/Mw + 1e3*(*YCO2)*(*rhoG)/Mg;
+volScalarField NT = 1e3*(*alphaW)*(*rhoW)/Mw + 1e3*(*alphaG)*(*rhoG)/Mg;
+volScalarField NL = 1e3*(*alphaW)*(*rhoW)/Mw;
 volScalarField NG = NT - NL;
 
-volScalarField NH2Ol = (*XH2O)*(*rhoW)/Mw;
-volScalarField NH2Og = (*YH2O)*(*rhoG)/Mg;
-volScalarField NCO2l = (*XCO2)*(*rhoW)/Mw;
-volScalarField NCO2g = (*YCO2)*(*rhoG)/Mg;
+volScalarField NH2Ol = 1e3*(*XH2O)*(*rhoW)/Mw;
+volScalarField NH2Og = 1e3*(*YH2O)*(*rhoG)/Mg;
+volScalarField NCO2l = 1e3*(*XCO2)*(*rhoW)/Mw;
+volScalarField NCO2g = 1e3*(*YCO2)*(*rhoG)/Mg;
 
 volScalarField NCO2g_t = NCO2g;
 volScalarField NH2Ol_t = NH2Ol;

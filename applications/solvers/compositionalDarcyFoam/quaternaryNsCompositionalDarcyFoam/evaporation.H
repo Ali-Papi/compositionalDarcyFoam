@@ -35,22 +35,22 @@ forAll(phases, i)
     }
 }
  
-    NH2O = (*XH2O)*(*rhoW)/Mw+(*YH2O)*(*rhoG)/Mg;
-    NCO2 = (*XCO2)*(*rhoW)/Mw+(*YCO2)*(*rhoG)/Mg;
-    //NT = (*alphaW)*(*rhoW)/Mw+(*alphaG)*(*rhoG)/Mg;
+    NH2O = 1e3*(*XH2O)*(*rhoW)/Mw+1e3*(*YH2O)*(*rhoG)/Mg;
+    NCO2 = 1e3*(*XCO2)*(*rhoW)/Mw+1e3*(*YCO2)*(*rhoG)/Mg;
+    //NT = 1e3*(*alphaW)*(*rhoW)/Mw+1e3*(*alphaG)*(*rhoG)/Mg;
 
-    //NCO2g = eps*yCO2*rhoa*(1-Sb)/(Mg);
-    NCO2l = (*XCO2)*(*rhoW)/Mw;
-    //NH2Ol = eps*xH2O*rhob*Sb/(Mw);
-    NH2Og = (*YH2O)*(*rhoG)/Mg;
-    NL = (*alphaW)*(*rhoW)/(Mw);
-    NCO2g = (*YCO2)*(*rhoG)/Mg; //NCO2g = yCO2*(NT-NL);
-    NH2Ol = (*XH2O)*(*rhoW)/Mw; //NH2Ol = xH2O*NL;
-    N_Nal = (*XNa)*(*rhoW)/Mw;
-    NCl_l = (*XCl)*(*rhoW)/Mw;
+    //NCO2g = 1e3*eps*yCO2*rhoa*(1-Sb)/(Mg);
+    NCO2l = 1e3*(*XCO2)*(*rhoW)/Mw;
+    //NH2Ol = 1e3*eps*xH2O*rhob*Sb/(Mw);
+    NH2Og = 1e3*(*YH2O)*(*rhoG)/Mg;
+    NL = 1e3*(*alphaW)*(*rhoW)/(Mw);
+    NCO2g = 1e3*(*YCO2)*(*rhoG)/Mg; //NCO2g = yCO2*(NT-NL);
+    NH2Ol = 1e3*(*XH2O)*(*rhoW)/Mw; //NH2Ol = xH2O*NL;
+    N_Nal = 1e3*(*XNa)*(*rhoW)/Mw;
+    NCl_l = 1e3*(*XCl)*(*rhoW)/Mw;
     NCl = NCl_l + 0.5*Ns;
     N_Na = N_Nal + 0.5*Ns;
-    NG = (*alphaG)*(*rhoG)/Mg; //NT-NL- Ns;
+    NG = 1e3*(*alphaG)*(*rhoG)/Mg; //NT-NL- Ns;
     NT = NL + NG + Ns;
     //volScalarField sigma1 = NCO2/(NT*PH) + NH2O/(NT*PP) ;
     //volScalarField sigma2 = NCO2*PH/NT + NH2O*PP/NT ;
@@ -135,7 +135,7 @@ forAll(phases, i)
 			
 		}
 		
-		//Sb[cellI] = (NL[cellI]*Mw.value())/(rhob.value()*eps[cellI]);
+		//Sb[cellI] = 1e-3*(NL[cellI]*Mw.value())/(rhob.value()*eps[cellI]);
 		
 	    }
     }
