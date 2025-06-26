@@ -60,7 +60,6 @@ forAll(phases, i)
     NH2Ol_t = NH2Ol;
     Nsflash = Ns; //initial guess
     NsflashLastItr = Nsflash; //save current iteration
-    equil_flag = 1;
 
     // -------------------------------- method 2 ---------------------------   
     
@@ -69,6 +68,7 @@ forAll(phases, i)
 	    if (NCO2g[cellI]> 0)
 	    {
             NSNL_error = 1;
+            equil_flag = 1;
             while (NSNL_error>1e-5)
             { 
                 bx[cellI] = (NT[cellI]-NCO2[cellI]-Nsflash[cellI])/(PH[cellI]-1) + (NT[cellI]-NH2O[cellI]-Nsflash[cellI])/(PP[cellI]-1);

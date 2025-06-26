@@ -23,7 +23,7 @@ profilingInfo
         parentId        3;
         description     "Foam::Time::writeObject - outputTime";
         calls           9;
-        totalTime       0.619466;
+        totalTime       0.951864;
         childTime       0;
         onStack         1;
     }
@@ -33,8 +33,8 @@ profilingInfo
         parentId        1;
         description     "Foam::Time::writeObject";
         calls           15286;
-        totalTime       0.670134;
-        childTime       0.619466;
+        totalTime       1.06633;
+        childTime       0.951864;
         onStack         1;
     }
 
@@ -42,8 +42,8 @@ profilingInfo
         id              1;
         description     "application::main";
         calls           1;
-        totalTime       89.4807;
-        childTime       0.670158;
+        totalTime       265.204;
+        childTime       1.06635;
         onStack         1;
     }
 
@@ -52,7 +52,7 @@ profilingInfo
         parentId        1;
         description     "functionObjectList::read";
         calls           1;
-        totalTime       2.4e-05;
+        totalTime       1.9e-05;
         childTime       0;
         onStack         0;
     }
