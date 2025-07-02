@@ -7,6 +7,13 @@ porousModels/Allwmake $targetType $*
 blockSystems/Allwmake $targetType $*
 
 compositionalDarcyFoam/Allwmake $targetType $*
+compositionalRhoSwDarcyFoam/Allwmake $targetType $*
+compositionalRhoSwGLSDarcyFoam/Allwmake $targetType $*
+compositionalRhoGLSDarcyFoam/Allwmake $targetType $*
+quaternaryRhoNsCompositionalDarcyFoam/Allwmake $targetType $*
+quaternaryRhoCompositionalDarcyFoam/Allwmake $targetType $*
+binaryRhoCompositionalDarcyFoam/Allwmake $targetType $*
+compositionalPoreSwDarcyFoam/Allwmake $targetType $*
 compositionalSwGLSDarcyFoam/Allwmake $targetType $*
 compositionalSwDarcyFoam/Allwmake $targetType $*
 compositionalGLSDarcyFoam/Allwmake $targetType $*

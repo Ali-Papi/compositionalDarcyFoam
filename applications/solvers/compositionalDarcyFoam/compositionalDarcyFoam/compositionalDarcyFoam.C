@@ -22,14 +22,15 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    coupledMatrixFoam
+    compositionalDarcyFoam
 
 Description
+    Main code for salt precipitation in CO2 storage in saline aquifers with interphase interaction in compositional multiphase flow.
     Multiphase solver for porous media, with implicit coupling between 
-    pressure and phase fractions achieved by fvBlockMatrix.
+    pressure, phase fractions and compositions achieved by fvBlockMatrix.
 
 Authors
-    Roberto Lange.
+    Ali Papi
 
 \*---------------------------------------------------------------------------*/
 

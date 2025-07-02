@@ -60,7 +60,6 @@ forAll(phases, i)
     NH2Ol_t = NH2Ol;
     Nsflash = Ns; //initial guess
     NsflashLastItr = Nsflash; //save current iteration
-    
 
     // -------------------------------- method 2 ---------------------------   
     
@@ -81,7 +80,6 @@ forAll(phases, i)
                 {
                     Info << "under the radical is negative, NL cannot be a complex number " << endl;
                     equil_flag = 0;
-                    NLflash[cellI] = NL[cellI];
                 }
                 else if ( x1[cellI] > 0 && x2[cellI] <= 0 && x1[cellI] < (NL[cellI] + NG[cellI]))
                 {
@@ -112,8 +110,8 @@ forAll(phases, i)
                     }
                     else
                     {
-                        Info << " both NL values are positive but none satisfies the equilibrium condition (very high), so no matter what the value is, there will be no equilibrium. Only giving NLflash a value to proceed : "  << X1[cellI] << endl;
-                        NLflash[cellI] = NL[cellI]; //just to give it something .. 
+                        Info << " both NL values are positive (or one positive) but none satisfies the equilibrium condition, so no matter what the value is, there will be no equilibrium. Only giving NLflash a value to proceed : "  << X1[cellI] << endl;
+                        NLflash[cellI] = x1[cellI]; //just to give it something
                         equil_flag = 0;
                     }
                  
@@ -124,8 +122,8 @@ forAll(phases, i)
                 }
                 else
                 {
-                    Info << "both NL values are non-positive (or one positive but doesn't satisfy equil. condition) and this means N is full gas" << endl;
-                    NLflash[cellI] = NL[cellI]; //just to give it something
+                    Info << "both NL values are non-positive and this means N is full gas" << endl;
+                    NLflash[cellI] = x1[cellI]; //just to give it something
                     equil_flag = 0;
                 }
 
@@ -138,7 +136,6 @@ forAll(phases, i)
                 {
                     Info << "under the radical is negative, Ns cannot be a complex number " << endl;
                     equil_flag = 0;
-                    Nsflash[cellI] = Ns[cellI];
                 }
                 else if ( X1[cellI] > 0 && X2[cellI] <= 0 && X1[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI]))
                 {
@@ -170,7 +167,7 @@ forAll(phases, i)
                     else
                     {
                         Info << " both Ns values are positive (or one positive) but none satisfies the equilibrium condition, so no matter what the value is, there will be no equilibrium. Only giving Nsflash a value to proceed : "  << X1[cellI] << endl;
-                        Nsflash[cellI] = Ns[cellI]; //just to give it something
+                        Nsflash[cellI] = X1[cellI]; //just to give it something
                         equil_flag = 0;
                     }
                  
@@ -181,7 +178,7 @@ forAll(phases, i)
                 else
                 {
                     Info << "both Ns values are non-positive and this means N is full Liquid? " << endl;
-                    Nsflash[cellI] = Ns[cellI]; //just to give it something
+                    Nsflash[cellI] = X1[cellI]; //just to give it something
                     equil_flag = 0;
                 }
                 
@@ -193,9 +190,9 @@ forAll(phases, i)
         //-----------------------------------------------------------------------------------------
             //Now we have an NLflash and Nsflash.
 
-            if (Nsflash[cellI] > 0 && NLflash[cellI] >0) // setting the bottom bound
+            if (Nsflash[cellI] > 0 && NLflash[cellI] >0) 
             {
-                if ((NLflash[cellI] < (NL[cellI] + NG[cellI])) && (equil_flag == 1) && (Nsflash[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI]))) //Gas-Solid-Liqid equilibrium:
+                if ((NLflash[cellI] < (NL[cellI] + NG[cellI])) && (Nsflash[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI]))) //Gas-Solid-Liqid equilibrium:
                 {
                     Info << " Gas-Solid-Liqid equilibrium " << endl;
                     NL[cellI]  = NLflash[cellI];
@@ -216,10 +213,30 @@ forAll(phases, i)
                     Info << " yH2O[cellI] =  " << YH2O->internalField()[cellI] << endl;
                     Info << " yH2O[cellI+1] =  " << YH2O->internalField()[cellI+1] << endl;
                     Info << " yH2O[cellI+2] =  " << YH2O->internalField()[cellI+2] << endl;
+                    Info << " Ns[cellI] =  " << Ns.internalField()[cellI] << endl;
                 }
-                //---------------------------
-                
-                else if ((Nsflash[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI])) && (Nsflash[cellI]!=Ns[cellI])) //Solid-Liqid equilibrium:
+/*-------------------------------
+                if ((NLflash[cellI] < (NT[cellI] - Ns[cellI]))) //Gas-Liqid equilibrium:
+                {
+                    Info << " Gas-Liqid equilibrium " << endl;
+                    NL[cellI]  = NLflash[cellI];
+                    YCO2->internalField()[cellI] = alphaG->internalField()[cellI]*(PP[cellI]-1)/(PP[cellI]-PH[cellI]); // NCO2/(PH*NT+(NT-NL)*(1-PH));
+                    XCO2->internalField()[cellI] = alphaW->internalField()[cellI]*YCO2->internalField()[cellI]*PH[cellI]/alphaG->internalField()[cellI];
+                    XNa->internalField()[cellI] = alphaW->internalField()[cellI]*N_Nal[cellI]/NL[cellI];
+                    XCl->internalField()[cellI] = alphaW->internalField()[cellI]*NCl_l[cellI]/NL[cellI];
+                    XH2O->internalField()[cellI]= alphaW->internalField()[cellI]- XCO2->internalField()[cellI] - XNa->internalField()[cellI] - XCl->internalField()[cellI];
+                    YH2O->internalField()[cellI]= alphaG->internalField()[cellI]- YCO2->internalField()[cellI];
+                    Info << " yCO2[cellI] =  " << YCO2->internalField()[cellI] << endl;
+                    Info << " xCO2[cellI] =  " << XCO2->internalField()[cellI] << endl;
+                    Info << " xCO2[cellI+1] =  " << XCO2->internalField()[cellI+1] << endl;
+                    Info << " xCO2[cellI+2] =  " << XCO2->internalField()[cellI+2] << endl;
+                    Info << " yH2O[cellI] =  " << YH2O->internalField()[cellI] << endl;
+                    Info << " yH2O[cellI+1] =  " << YH2O->internalField()[cellI+1] << endl;
+                    Info << " yH2O[cellI+2] =  " << YH2O->internalField()[cellI+2] << endl;
+                }
+
+
+                if ((Nsflash[cellI] < (NT[cellI] - NLflash[cellI]))) //Solid-Liqid equilibrium:
                 {
                     Info << " Solid-Liqid equilibrium " << endl;
                     Ns[cellI] = Nsflash[cellI];
@@ -238,97 +255,13 @@ forAll(phases, i)
                     Info << " yH2O[cellI+1] =  " << YH2O->internalField()[cellI+1] << endl;
                     Info << " yH2O[cellI+2] =  " << YH2O->internalField()[cellI+2] << endl;
                 }
-                
-                
-                else if (Nsflash[cellI] >= (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI])) //update NLflash based on Ns not NSflash coz no equil.
-                {
-                    bx[cellI] = (NT[cellI]-NCO2[cellI]-Ns[cellI])/(PH[cellI]-1) + (NT[cellI]-NH2O[cellI]-Ns[cellI])/(PP[cellI]-1);
-                    cx[cellI] = (NT[cellI]-Ns[cellI])*(N_Na[cellI]+NCl[cellI]-Ns[cellI])/((PH[cellI]-1)*(PP[cellI]-1));
-                    x1[cellI] = (-bx[cellI] + Foam::sqrt((sqr(bx[cellI]) - 4*cx[cellI])))/2 ;
-                    x2[cellI] = (-bx[cellI] - Foam::sqrt((sqr(bx[cellI]) - 4*cx[cellI])))/2;
-                    
-                    if ((sqr(bx[cellI]) - 4*cx[cellI])<0)
-                    {
-                        Info << "under the radical is negative, NL cannot be a complex number " << endl;
-                        equil_flag = 0;
-                        NLflash[cellI] = NL[cellI];
-                    }
-                    else if ( x1[cellI] > 0 && x2[cellI] <= 0)
-                    {
-                        NLflash[cellI] = x1[cellI];
-                        Info << "x1[cellI] > 0 " << endl;
-                        Info << "x1 =  " << x1[cellI] << endl;
-                        Info << "NL[cellI] + NG[cellI] =  " << NL[cellI] + NG[cellI] << endl;
-                        equil_flag = 1;
-                    }
-                    else if (x2[cellI] > 0 &&  x1[cellI] <= 0)
-                    {
-                        NLflash[cellI] = x2[cellI];
-                        Info << " x2[cellI] > 0 " << endl;
-                        Info << "x2 =  " << x2[cellI] << endl;
-                        Info << "NL[cellI] + NG[cellI] =  " << NL[cellI] + NG[cellI] << endl;
-                        equil_flag = 1;
-                    }
-                    
-                    else if ( x1[cellI] > 0 && x2[cellI] > 0)
-                    {
-                        Info << "both NL values are positive and this is not physical, NL can have only 1 value " << endl;
-                        if (x1[cellI] < (NL[cellI] + NG[cellI])) //Gas-Solid-Liqid equilibrium:
-                        {
-                            Info << " NL[cellI] + NG[cellI] is = "  << NL[cellI] + NG[cellI] << endl;
-                            NLflash[cellI] = x1[cellI];
-                            equil_flag = 1;
-                        }
-                        else if (x2[cellI] < (NL[cellI] + NG[cellI]))
-                        {
-                            Info << " NL[cellI] + NG[cellI] is = "  << NL[cellI] + NG[cellI] << endl;
-                            NLflash[cellI] = x2[cellI];
-                            equil_flag = 1;
-                        }
-                        else
-                        {
-                            Info << " both NL values are positive but none satisfies the equilibrium condition (very high), so no matter what the value is, there will be no equilibrium. Only giving NLflash a value to proceed : "  << X1[cellI] << endl;
-                            NLflash[cellI] = NL[cellI]; //just to give it something .. 
-                            equil_flag = 0;
-                        }
-                 
-                        Info << "x1 =  " << x1[cellI] << endl;
-                        Info << "x2 =  " << x2[cellI] << endl;
-                        Info << "NT[cellI] =  " << NT[cellI] << endl; //
-                        Info << "NL[cellI] + NG[cellI] =  " << NL[cellI] + NG[cellI] << endl;
-                    }
-                    else
-                    {
-                        Info << "both NL values are non-positive (or one positive but doesn't satisfy equil. condition) and this means N is full gas" << endl;
-                        NLflash[cellI] = NL[cellI]; //just to give it something
-                        equil_flag = 0;
-                    }
-                    
-                    
-                    if ((NLflash[cellI] < (NL[cellI] + NG[cellI]))&& (equil_flag == 1)) //Gas-Liqid equilibrium:
-                    {
-                        Info << " Gas-Liqid equilibrium " << endl;
-                        NL[cellI]  = NLflash[cellI];
-                        YCO2->internalField()[cellI] = alphaG->internalField()[cellI]*(PP[cellI]-1)/(PP[cellI]-PH[cellI]); // NCO2/(PH*NT+(NT-NL)*(1-PH));
-                        XCO2->internalField()[cellI] = alphaW->internalField()[cellI]*YCO2->internalField()[cellI]*PH[cellI]/alphaG->internalField()[cellI];
-                        XNa->internalField()[cellI] = alphaW->internalField()[cellI]*N_Nal[cellI]/NL[cellI];
-                        XCl->internalField()[cellI] = alphaW->internalField()[cellI]*NCl_l[cellI]/NL[cellI];
-                        XH2O->internalField()[cellI]= alphaW->internalField()[cellI]- XCO2->internalField()[cellI] - XNa->internalField()[cellI] - XCl->internalField()[cellI];
-                        YH2O->internalField()[cellI]= alphaG->internalField()[cellI]- YCO2->internalField()[cellI];
-                        Info << " yCO2[cellI] =  " << YCO2->internalField()[cellI] << endl;
-                        Info << " xCO2[cellI] =  " << XCO2->internalField()[cellI] << endl;
-                        Info << " xCO2[cellI+1] =  " << XCO2->internalField()[cellI+1] << endl;
-                        Info << " xCO2[cellI+2] =  " << XCO2->internalField()[cellI+2] << endl;
-                        Info << " yH2O[cellI] =  " << YH2O->internalField()[cellI] << endl;
-                        Info << " yH2O[cellI+1] =  " << YH2O->internalField()[cellI+1] << endl;
-                        Info << " yH2O[cellI+2] =  " << YH2O->internalField()[cellI+2] << endl;
-                    }
 
+-------------------------------------------*/
 
                 //Info << " XCO2[cellI] =  " << XCO2[cellI] << endl;
                 //Info << " XCO2 =  " << XCO2 << endl;
                 //Info << " cellI =  " << cellI << endl;
-                }
+            }
             //------------
             //if (NLflash[cellI] > 0 && Nsflash[cellI] <=0)
             //{
@@ -344,10 +277,9 @@ forAll(phases, i)
                     //YH2O->internalField()[cellI]= alphaG->internalField()[cellI]- YCO2->internalField()[cellI];
                 //}
                 
-                //Sb[cellI] = (NL[cellI]*Mw.value())/(rhob.value()*eps[cellI]);
-            
-            }
-            
+                //Sb[cellI] = 1e-3*(NL[cellI]*Mw.value())/(rhob.value()*eps[cellI]);
+
+        }
             //if (Nsflash > 0 && NLflash <=0) //Solid-Liqid equilibrium, only:
             //{
             //
@@ -389,13 +321,14 @@ forAll(phases, i)
             //Info << " cellI =  " << cellI << endl;
 			
 			
-	    }
+	}
+    //Ns.write();
 		
-		//Sb[cellI] = (NL[cellI]*Mw.value())/(rhob.value()*eps[cellI]);
+		//Sb[cellI] = 1e-3*(NL[cellI]*Mw.value())/(rhob.value()*eps[cellI]);
     
     //Sg = 1-Sb;
-    }
     
+    Ns.correctBoundaryConditions();
     //Info << "Sb evaporation: " << " Min(Sb) = " << gMin(Sb) << " Max(Sb) = " << gMax(Sb) << endl;
 
 }

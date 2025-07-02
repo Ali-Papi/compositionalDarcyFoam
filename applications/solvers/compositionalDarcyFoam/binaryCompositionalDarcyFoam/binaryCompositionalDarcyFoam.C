@@ -22,14 +22,15 @@ License
     along with foam-extend.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    coupledMatrixFoam
+    binaryCompositionalDarcyFoam
 
 Description
-    Multiphase solver for porous media, with implicit coupling between 
-    pressure and phase fractions achieved by fvBlockMatrix.
+    Multiphase solver for porous media for a binary system of CO2 and H2O with the interaction between the phases,
+    i.e., water evaporation in gas and CO2 dissolution in water.
+    with implicit coupling between pressure, phase fractions and compositions achieved by fvBlockMatrix.
 
 Authors
-    Roberto Lange.
+    Ali Papi
 
 \*---------------------------------------------------------------------------*/
 

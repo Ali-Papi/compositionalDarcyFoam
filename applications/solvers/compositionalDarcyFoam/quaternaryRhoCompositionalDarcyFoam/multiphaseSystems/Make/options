@@ -1,0 +1,10 @@
+EXE_INC = \
+    -I../../phaseSystems/lnInclude \
+    -I../../porousModels/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
+    -lcoupledPhaseSystem \
+    -lfiniteVolume \
+    -llduSolvers
