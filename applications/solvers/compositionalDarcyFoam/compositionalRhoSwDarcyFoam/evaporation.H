@@ -198,7 +198,7 @@ forAll(phases, i)
 
             if (Nsflash[cellI] > 0 && NLflash[cellI] >0) // setting the bottom bound
             {
-                if ((NLflash[cellI] < (NL[cellI] + NG[cellI])) && (equil_flag == 1) && (Nsflash[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI]))) //Gas-Solid-Liqid equilibrium:
+                if ((NLflash[cellI] < (NL[cellI] + NG[cellI])-(Nsflash[cellI]-Ns[cellI])) && (equil_flag == 1) && (Nsflash[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI]))) //Gas-Solid-Liqid equilibrium:
                 {
                     Info << " Gas-Solid-Liqid equilibrium " << endl;
                     NL[cellI]  = NLflash[cellI];
@@ -214,12 +214,12 @@ forAll(phases, i)
                     YCO2->internalField()[cellI] = alphaG->internalField()[cellI]*(PP[cellI]-1)/(PP[cellI]-PH[cellI]); // NCO2/(PH*NT+(NT-NL)*(1-PH));
                     YH2O->internalField()[cellI]= alphaG->internalField()[cellI]- YCO2->internalField()[cellI];
                     XCO2->internalField()[cellI] = alphaW->internalField()[cellI]*YCO2->internalField()[cellI]*PH[cellI]/alphaG->internalField()[cellI];
-                    XH2O->internalField()[cellI]= alphaW->internalField()[cellI]*YH2O->internalField()[cellI]*PP[cellI]/alphaG->internalField()[cellI];
-                    XNa->internalField()[cellI] = (alphaW->internalField()[cellI]- XCO2->internalField()[cellI] - XH2O->internalField()[cellI])/2;
-                    XCl->internalField()[cellI] = XNa->internalField()[cellI];
-                    //XNa->internalField()[cellI] = alphaW->internalField()[cellI]*N_Nal[cellI]/NL[cellI];
-                    //XCl->internalField()[cellI] = alphaW->internalField()[cellI]*NCl_l[cellI]/NL[cellI];
-                    //XH2O->internalField()[cellI]= alphaW->internalField()[cellI]- XCO2->internalField()[cellI] - XNa->internalField()[cellI] - XCl->internalField()[cellI];
+                    //XH2O->internalField()[cellI]= alphaW->internalField()[cellI]*YH2O->internalField()[cellI]*PP[cellI]/alphaG->internalField()[cellI];
+                    //XNa->internalField()[cellI] = (alphaW->internalField()[cellI]- XCO2->internalField()[cellI] - XH2O->internalField()[cellI])/2;
+                    //XCl->internalField()[cellI] = XNa->internalField()[cellI];
+                    XNa->internalField()[cellI] = alphaW->internalField()[cellI]*N_Nal[cellI]/NL[cellI];
+                    XCl->internalField()[cellI] = alphaW->internalField()[cellI]*NCl_l[cellI]/NL[cellI];
+                    XH2O->internalField()[cellI]= alphaW->internalField()[cellI]- XCO2->internalField()[cellI] - XNa->internalField()[cellI] - XCl->internalField()[cellI];
                 
                     Info << " yCO2[cellI] =  " << YCO2->internalField()[cellI] << endl;
                     Info << " xCO2[cellI] =  " << XCO2->internalField()[cellI] << endl;

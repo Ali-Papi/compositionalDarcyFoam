@@ -197,7 +197,7 @@ forAll(phases, i)
             if (Nsflash[cellI] > 0 && NLflash[cellI] >0) // setting the bottom bound
             {
                 if ((NLflash[cellI] < (NL[cellI] + NG[cellI])) && (equil_flag == 1) && (Nsflash[cellI] < (N_Nal[cellI] + NCl_l[cellI] + Ns[cellI]))) //Gas-Solid-Liqid equilibrium:
-                {
+                { //-(Nsflash[cellI]-Ns[cellI])
                     Info << " Gas-Solid-Liqid equilibrium " << endl;
                     NL[cellI]  = NLflash[cellI];
                     Ns[cellI] = Nsflash[cellI];
