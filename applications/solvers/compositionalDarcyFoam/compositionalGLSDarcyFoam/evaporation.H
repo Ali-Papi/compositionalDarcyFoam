@@ -16,7 +16,8 @@ forAll(phases, i)
         {
             volScalarField& alphaG = phase;
             tmp<volScalarField> tRhoG = phase.rho();
-            rhoG = new volScalarField(tRhoG()); 
+            volScalarField& rhoG = const_cast<volScalarField&>(tRhoG());
+            //rhoG = new volScalarField(tRhoG());
             //volScalarField& rhoG = phase.rho();          // Density
             volScalarField& YCO2 = phase.YRef()[0];
             volScalarField& YH2O = phase.YRef()[1];
@@ -25,7 +26,8 @@ forAll(phases, i)
         {
             volScalarField& alphaW = phase;
             tmp<volScalarField> tRhoW = phase.rho();
-            rhoW = new volScalarField(tRhoW());
+	    volScalarField& rhoW = const_cast<volScalarField&>(tRhoW());
+            //rhoW = new volScalarField(tRhoW());
             //volScalarField& rhoW = phase.rho();          // Density
             volScalarField& XCO2 = phase.YRef()[0];
             volScalarField& XH2O = phase.YRef()[1];
